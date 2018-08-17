@@ -23,14 +23,13 @@ class Products extends StatelessWidget {
                 child: Text(
                   'Details',
                 ),
-                onPressed: () => Navigator.push<bool>(
+                onPressed: () => Navigator
+                        .pushNamed<bool>(
                       context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ProductPage(
-                            products[index]['title'], products[index]['image']),
-                      ),
-                    ).then((bool value) {
-                      if(value) {
+                      '/product/' + index.toString(),
+                    )
+                        .then((bool value) {
+                      if (value) {
                         deleteProduct(index);
                       }
                     }),
