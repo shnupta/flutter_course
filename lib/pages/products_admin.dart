@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'products.dart';
 import 'product_create.dart';
 import 'product_list.dart';
 
 class ProductsAdminPage extends StatelessWidget {
-  final Map<String, String> products;
+  final Function addProduct;
+  final Function deleteProduct;
+
+  ProductsAdminPage(this.addProduct, this.deleteProduct);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class ProductsAdminPage extends StatelessWidget {
             ListTile(
               title: Text('Products Page'),
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/');
+                Navigator.pushReplacementNamed(context, '/products');
               },
             )
           ],
@@ -44,7 +46,7 @@ class ProductsAdminPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: <Widget>[
-            ProductCreatePage(),
+            ProductCreatePage(addProduct),
             ProductListPage(),
           ],
         )
