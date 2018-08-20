@@ -14,20 +14,55 @@ class Products extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Image.asset('assets/food.jpg'),
-          Text(products[index]['title']),
+          Container(
+            padding: EdgeInsets.only(top: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  products[index]['title'],
+                  style: TextStyle(
+                    fontSize: 26.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Oswald',
+                  ),
+                ),
+                SizedBox(
+                  width: 8.0,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
+                  child: Text(
+                    "\$${products[index]['price']}",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).accentColor,
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 1.0),
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
+            child: Text('Union Square, San Francisco'),
+          ),
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[
               FlatButton(
-                child: Text(
-                  'Details',
-                ),
-                onPressed: () => Navigator
-                        .pushNamed<bool>(
-                      context,
-                      '/product/' + index.toString(),
-                    )
-              )
+                  child: Text(
+                    'Details',
+                  ),
+                  onPressed: () => Navigator.pushNamed<bool>(
+                        context,
+                        '/product/' + index.toString(),
+                      ))
             ],
           )
         ],
