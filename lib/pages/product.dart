@@ -4,9 +4,13 @@ import 'dart:async';
 
 class ProductPage extends StatelessWidget {
   final String title;
+  final String description;
   final String imageUrl;
+  final String location;
+  final double price;
 
-  ProductPage(this.title, this.imageUrl);
+  ProductPage(
+      this.title, this.imageUrl, this.description, this.location, this.price);
 
   _showWarningDialog(BuildContext context) {
     showDialog(
@@ -44,24 +48,59 @@ class ProductPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text(
+            title,
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () => _showWarningDialog(context),
+            ),
+          ],
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.asset(imageUrl),
             Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(title),
+              padding: const EdgeInsets.all(20.0),
+              child: Image.asset(imageUrl),
             ),
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                child: Text('DELETE'),
-                onPressed: () => _showWarningDialog(context),
-                color: Theme.of(context).accentColor,
+            SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 26.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Oswald',
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        "$location | \$$price",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'Oswald',
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15.0),
+                    Text(description),
+                  ],
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
