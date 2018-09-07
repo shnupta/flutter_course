@@ -40,6 +40,38 @@ class ProductPage extends StatelessWidget {
         });
   }
 
+  Widget _buildProductDetailsView() {
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                TitleDefault(title),
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 8.0),
+              child: Text(
+                "$location | \$$price",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontFamily: 'Oswald',
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+            SizedBox(height: 15.0),
+            Text(description),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -67,35 +99,7 @@ class ProductPage extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Image.asset(imageUrl),
             ),
-            SingleChildScrollView(
-              child: Container(
-                margin: EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        TitleDefault(title),
-                      ],
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        "$location | \$$price",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontFamily: 'Oswald',
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 15.0),
-                    Text(description),
-                  ],
-                ),
-              ),
-            ),
+            _buildProductDetailsView(),
           ],
         ),
       ),
