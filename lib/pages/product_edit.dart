@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
+import 'package:scoped_model/scoped_model.dart';
+
+import 'package:flutter_course/scoped-models/products.dart';
+
 import '../widgets/helpers/ensure-visible.dart';
+import '../models/product.dart';
 
 class ProductEditPage extends StatefulWidget {
   final Function addProduct;
   final Function updateProduct;
-  final Map<String, dynamic> product;
+  final Product product;
   final int productIndex;
 
   ProductEditPage(
@@ -22,6 +27,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
     'title': null,
     'description': null,
     'price': null,
+    'image': 'assets/food.jpg',
+    'location': 'Union Square, San Francisco',
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final titleFocusNode = FocusNode();
@@ -33,7 +40,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       focusNode: titleFocusNode,
       child: TextFormField(
         focusNode: titleFocusNode,
-        initialValue: widget.product != null ? widget.product['title'] : '',
+        initialValue: widget.product != null ? widget.product.title : '',
         decoration: InputDecoration(
           labelText: 'Title',
         ),
@@ -53,8 +60,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       focusNode: descriptionFocusNode,
       child: TextFormField(
         focusNode: descriptionFocusNode,
-        initialValue:
-            widget.product != null ? widget.product['description'] : '',
+        initialValue: widget.product != null ? widget.product.description : '',
         maxLines: 10,
         decoration: InputDecoration(
           labelText: 'Description',
@@ -76,7 +82,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       child: TextFormField(
         focusNode: priceFocusNode,
         initialValue:
-            widget.product != null ? widget.product['price'].toString() : '',
+            widget.product != null ? widget.product.price.toString() : '',
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
           labelText: 'Price',
@@ -93,16 +99,36 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm(Function addProduct, Function updateProduct) {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
     if (widget.product == null)
-      widget.addProduct(_formData);
+      addProduct(Product(
+          title: _formData['title'],
+          description: _formData['description'],
+          image: _formData['image'],
+          price: _formData['price']));
     else
-      widget.updateProduct(widget.productIndex, _formData);
+      updateProduct(
+          widget.productIndex,
+          Product(
+              title: _formData['title'],
+              description: _formData['description'],
+              image: _formData['image'],
+              price: _formData['price']));
     Navigator.pushReplacementNamed(context, '/products');
+  }
+
+  Widget _buildSubmitButton() {
+    return ScopedModelDescendant<ProductsModel>(builder: (BuildContext context, Widget widget, ProductsModel model) {
+      return RaisedButton(
+                child: Text('Save'),
+                textColor: Colors.white,
+                onPressed: () => _submitForm(model.addProduct, model.updateProduct),
+              );
+    },);
   }
 
   Widget _buildPageContent(BuildContext context) {
@@ -128,11 +154,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
               SizedBox(
                 height: 10.0,
               ),
-              RaisedButton(
-                child: Text('Save'),
-                textColor: Colors.white,
-                onPressed: _submitForm,
-              ),
+              _buildSubmitButton(),
             ],
           ),
         ),
@@ -142,8 +164,6 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    
-
     final Widget pageContent = _buildPageContent(context);
 
     return widget.product == null
