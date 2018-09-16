@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:scoped_model/scoped_model.dart';
 
-import 'pages/auth.dart';
-import 'pages/products_admin.dart';
-import 'pages/products.dart';
-import 'pages/product.dart';
-import 'models/product.dart';
-import 'scoped-models/products.dart';
+import 'package:flutter_course/pages/auth.dart';
+import 'package:flutter_course/pages/products_admin.dart';
+import 'package:flutter_course/pages/products.dart';
+import 'package:flutter_course/pages/product.dart';
+import 'package:flutter_course/models/product.dart';
+import 'package:flutter_course/scoped-models/products.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
             final int index = int.parse(pathElements[2]);
             return MaterialPageRoute<bool>(
               builder: (BuildContext context) =>
-                  ProductPage(null, null, null, null, null),
+                  ProductPage(index),
             );
           }
 

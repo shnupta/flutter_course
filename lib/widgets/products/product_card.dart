@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course/widgets/products/address_tag.dart';
 import 'package:flutter_course/widgets/ui_elements/title_default.dart';
-import 'price_tag.dart';
-import '../../models/product.dart';
+import 'package:flutter_course/widgets/products/price_tag.dart';
+import 'package:flutter_course/models/product.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;

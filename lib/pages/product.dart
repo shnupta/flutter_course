@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'dart:async';
 
+import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter_course/scoped-models/products.dart';
+
+import 'package:flutter_course/models/product.dart';
 import 'package:flutter_course/widgets/ui_elements/title_default.dart';
 
 class ProductPage extends StatelessWidget {
-  final String title;
-  final String description;
-  final String imageUrl;
-  final String location;
-  final double price;
+  final int productIndex;
 
-  ProductPage(
-      this.title, this.imageUrl, this.description, this.location, this.price);
+  ProductPage(this.productIndex);
 
   _showWarningDialog(BuildContext context) {
     showDialog(
@@ -40,7 +39,7 @@ class ProductPage extends StatelessWidget {
         });
   }
 
-  Widget _buildProductDetailsView() {
+  Widget _buildProductDetailsView(Product product) {
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.all(20.0),
@@ -50,13 +49,13 @@ class ProductPage extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                TitleDefault(title),
+                TitleDefault(product.title),
               ],
             ),
             Container(
               margin: EdgeInsets.only(top: 8.0),
               child: Text(
-                "$location | \$$price",
+                "${product.location} | \$${product.price}",
                 style: TextStyle(
                   color: Colors.grey,
                   fontFamily: 'Oswald',
@@ -65,7 +64,7 @@ class ProductPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 15.0),
-            Text(description),
+            Text(product.description),
           ],
         ),
       ),
@@ -80,28 +79,33 @@ class ProductPage extends StatelessWidget {
         Navigator.pop(context, false);
         return Future.value(false);
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            title,
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => _showWarningDialog(context),
+      child: ScopedModelDescendant<ProductsModel>(
+        builder: (BuildContext context, Widget widget, ProductsModel model) {
+          final Product product = model.products[productIndex];
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                product.title,
+              ),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => _showWarningDialog(context),
+                ),
+              ],
             ),
-          ],
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              child: Image.asset(imageUrl),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Image.asset(product.image),
+                ),
+                _buildProductDetailsView(product),
+              ],
             ),
-            _buildProductDetailsView(),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

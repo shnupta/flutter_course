@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'product_card.dart';
-import '../../models/product.dart';
+import 'package:flutter_course/widgets/products/product_card.dart';
+import 'package:flutter_course/models/product.dart';
 import 'package:flutter_course/scoped-models/products.dart';
 
 class Products extends StatelessWidget {
