@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:scoped_model/scoped_model.dart';
-import 'package:flutter_course/scoped-models/products.dart';
+import 'package:flutter_course/scoped-models/main.dart';
 
 import 'package:flutter_course/models/product.dart';
 import 'package:flutter_course/widgets/ui_elements/title_default.dart';
@@ -79,8 +79,8 @@ class ProductPage extends StatelessWidget {
         Navigator.pop(context, false);
         return Future.value(false);
       },
-      child: ScopedModelDescendant<ProductsModel>(
-        builder: (BuildContext context, Widget widget, ProductsModel model) {
+      child: ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget widget, MainModel model) {
           final Product product = model.products[productIndex];
           return Scaffold(
             appBar: AppBar(

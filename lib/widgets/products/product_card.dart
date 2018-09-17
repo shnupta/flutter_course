@@ -3,6 +3,9 @@ import 'package:flutter_course/widgets/products/address_tag.dart';
 import 'package:flutter_course/widgets/ui_elements/title_default.dart';
 import 'package:flutter_course/widgets/products/price_tag.dart';
 import 'package:flutter_course/models/product.dart';
+import 'package:flutter_course/scoped-models/main.dart';
+
+import 'package:scoped_model/scoped_model.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -38,10 +41,19 @@ class ProductCard extends StatelessWidget {
                 '/product/' + productIndex.toString(),
               ),
         ),
-        IconButton(
-          icon: Icon(Icons.favorite_border),
-          color: Colors.red,
-          onPressed: () {},
+        ScopedModelDescendant<MainModel>(
+          builder: (BuildContext context, Widget widget, MainModel model) {
+            return IconButton(
+              icon: Icon(model.products[productIndex].isFavourite
+                  ? Icons.favorite
+                  : Icons.favorite_border),
+              color: Colors.red,
+              onPressed: () {
+                model.selectProduct(productIndex);
+                model.toggleFavouriteStatus();
+              },
+            );
+          },
         ),
       ],
     );

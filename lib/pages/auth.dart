@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:scoped_model/scoped_model.dart';
+
+import 'package:flutter_course/scoped-models/main.dart';
+
 class AuthPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -33,7 +37,9 @@ class _AuthPageState extends State<AuthPage> {
       ),
       keyboardType: TextInputType.emailAddress,
       validator: (String value) {
-        if(value.isEmpty || !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?").hasMatch(value)) {
+        if (value.isEmpty ||
+            !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                .hasMatch(value)) {
           return 'Not a valid email';
         }
       },
@@ -52,7 +58,8 @@ class _AuthPageState extends State<AuthPage> {
       ),
       obscureText: true,
       validator: (String value) {
-        if(value.isEmpty || value.length < 8) return 'Password must be at least 8 characters long';
+        if (value.isEmpty || value.length < 8)
+          return 'Password must be at least 8 characters long';
       },
       onSaved: (String value) {
         _formData['password'] = value;
@@ -72,9 +79,10 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  void _submitForm() {
-    if(!_formKey.currentState.validate() || !_formData['acceptTerms']) return;
+  void _submitForm(Function login) {
+    if (!_formKey.currentState.validate() || !_formData['acceptTerms']) return;
     _formKey.currentState.save();
+    login(_formData['email'], _formData['password']);
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -108,9 +116,14 @@ class _AuthPageState extends State<AuthPage> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    RaisedButton(
-                      child: Text('LOGIN'),
-                      onPressed: _submitForm,
+                    ScopedModelDescendant<MainModel>(
+                      builder: (BuildContext context, Widget widget,
+                          MainModel model) {
+                        return RaisedButton(
+                          child: Text('LOGIN'),
+                          onPressed: () => _submitForm(model.login),
+                        );
+                      },
                     ),
                   ],
                 ),
