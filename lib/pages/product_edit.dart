@@ -73,8 +73,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       focusNode: priceFocusNode,
       child: TextFormField(
         focusNode: priceFocusNode,
-        initialValue:
-            product != null ? product.price.toString() : '',
+        initialValue: product != null ? product.price.toString() : '',
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
           labelText: 'Price',
@@ -91,33 +90,36 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  void _submitForm(Function addProduct, Function updateProduct, [int selectedProductIndex]) {
+  void _submitForm(Function addProduct, Function updateProduct, Function setSelectedProduct,
+      [int selectedProductIndex]) {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
     if (selectedProductIndex == null)
-      addProduct(Product(
-          title: _formData['title'],
-          description: _formData['description'],
-          image: _formData['image'],
-          price: _formData['price']));
+      addProduct(
+        _formData['title'],
+        _formData['description'],
+        _formData['price'],
+        _formData['image'],
+      );
     else
       updateProduct(
-          Product(
-              title: _formData['title'],
-              description: _formData['description'],
-              image: _formData['image'],
-              price: _formData['price']));
-    Navigator.pushReplacementNamed(context, '/products');
+        _formData['title'],
+        _formData['description'],
+        _formData['price'],
+        _formData['image'],
+      );
+    Navigator.pushReplacementNamed(context, '/products').then((_) => setSelectedProduct(null));
   }
 
   Widget _buildSubmitButton(MainModel model) {
-        return RaisedButton(
-          child: Text('Save'),
-          textColor: Colors.white,
-          onPressed: () => _submitForm(model.addProduct, model.updateProduct, model.selectedProductIndex),
-        );
+    return RaisedButton(
+      child: Text('Save'),
+      textColor: Colors.white,
+      onPressed: () => _submitForm(
+          model.addProduct, model.updateProduct, model.selectProduct, model.selectedProductIndex),
+    );
   }
 
   Widget _buildPageContent(BuildContext context, MainModel model) {
@@ -157,11 +159,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
       builder: (BuildContext context, Widget widget, MainModel model) {
         final Widget pageContent = _buildPageContent(context, model);
         return model.selectedProductIndex == null
-        ? pageContent
-        : Scaffold(
-            appBar: AppBar(title: Text('Edit Product')),
-            body: pageContent,
-          );
+            ? pageContent
+            : Scaffold(
+                appBar: AppBar(title: Text('Edit Product')),
+                body: pageContent,
+              );
       },
     );
   }

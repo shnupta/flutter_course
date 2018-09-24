@@ -44,7 +44,7 @@ class ProductCard extends StatelessWidget {
         ScopedModelDescendant<MainModel>(
           builder: (BuildContext context, Widget widget, MainModel model) {
             return IconButton(
-              icon: Icon(model.products[productIndex].isFavourite
+              icon: Icon(model.allproducts[productIndex].isFavourite
                   ? Icons.favorite
                   : Icons.favorite_border),
               color: Colors.red,
@@ -67,6 +67,7 @@ class ProductCard extends StatelessWidget {
           Image.asset('assets/food.jpg'),
           _buildTitlePriceRow(),
           new AddressTag(product.location),
+          Text(product.userEmail),
           _buildActionButtonBar(context),
         ],
       ),
